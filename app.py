@@ -11,18 +11,14 @@ st.set_page_config(
 )
 
 # --- UI STYLING (MATCHING DESIGN TEMPELATE.JPG) ---
-st.markdown("""
-    <style>
-    /* Main Background */
+# Using a raw string to avoid Python 3.14 escape/indentation errors
+st.markdown(r"""
+<style>
     .main { background-color: #F8F9FE; }
-    
-    /* Sidebar Styling */
     [data-testid="stSidebar"] { 
         background-color: #FFFFFF; 
         border-right: 1px solid #E6E8F1; 
     }
-    
-    /* Buttons */
     .stButton>button { 
         background-color: #7B61FF; 
         color: white; 
@@ -31,8 +27,6 @@ st.markdown("""
         padding: 10px 24px;
         width: 100%;
     }
-    
-    /* Risk Card Styling */
     .risk-card {
         background-color: white; 
         padding: 25px; 
@@ -47,22 +41,18 @@ st.markdown("""
         color: #333; 
         margin: 10px 0;
     }
-    
-    /* Status Tags */
     .status-safe { color: #28C76F; font-weight: bold; }
     .status-caution { color: #FF9F43; font-weight: bold; }
     .status-risk { color: #EA5455; font-weight: bold; }
-    </style>
-    """, unsafe_allow_value=True)
+</style>
+""", unsafe_allow_value=True)
 
 # --- SIDEBAR NAVIGATION ---
 with st.sidebar:
-    st.image("https://cdn-icons-png.flaticon.com/512/4320/4320350.png", width=50) # Placeholder logo
-    st.title("Lumi")
+    st.title("✨ Lumi")
     st.caption("AI Digital Pharmacist")
     st.markdown("---")
     
-    # Navigation Buttons (Visual only for Demo)
     st.button("🏠 Home")
     st.button("🔍 Scan Prescription")
     st.button("💊 My Medicines")
@@ -72,9 +62,7 @@ with st.sidebar:
     st.button("🤖 AI Chat Assistant")
     
     st.markdown("---")
-    # Chatbot Avatar area
     st.info("**Hi! I'm Lumi ✨**\nYour AI Pharmacist. How can I help you today?")
-    st.text_input("Talk to Lumi...", placeholder="Ask about dosage...")
 
 # --- MAIN DASHBOARD AREA ---
 st.title("Hello, Ali 👋")
@@ -91,12 +79,11 @@ with col_upload:
 
 with col_risk:
     st.subheader("Prescription Risk Score")
-    # This score updates dynamically if logic is added; for now, it mirrors the design
     st.markdown("""
         <div class="risk-card">
-            <p style="color: #FF9F43; font-weight: bold;">Moderate Risk</p>
+            <p style="color: #FF9F43; font-weight: bold; margin:0;">Moderate Risk</p>
             <div class="metric-value">7.5 <span style="font-size:22px; color: #666;">/10</span></div>
-            <p style="font-size: 14px; color: #888;">Based on current medications</p>
+            <p style="font-size: 14px; color: #888; margin:0;">Based on current medications</p>
         </div>
     """, unsafe_allow_value=True)
 
@@ -115,41 +102,37 @@ if uploaded_file is not None:
     st.subheader("🤖 Lumi AI Clinical Analysis")
     with st.spinner('Lumi is analyzing your prescription for safety...'):
         try:
-            # Convert uploaded file to PIL Image for the AI
             image_pil = Image.open(uploaded_file)
-            # Call the brain.py function
+            # This calls the logic from your brain.py file
             report = analyze_prescription(image_pil)
-            
-            # Display result in a nice box
             st.success("Analysis Complete!")
             st.markdown(report)
-            
         except Exception as e:
-            st.error(f"Could not analyze image: {e}")
-
+            st.error(f"Analysis failed: {str(e)}")
 else:
-    # Default view if no file is uploaded (Table view from Design)
+    # Default Table View
     col_meds, col_nearby = st.columns([2, 1])
     
     with col_meds:
         st.subheader("💊 Your Medicines")
         med_data = [
             {"Medicine": "Metformin 500mg", "Purpose": "Control blood sugar", "When": "After breakfast", "Safety": "✅ Safe"},
-            {"Medicine": "Amoxicillin 500mg", "Purpose": "Bacterial infection", "When": "After food, 3x daily", "Safety": "⚠️ Caution"},
+            {"Medicine": "Amoxicillin 500mg", "Purpose": "Bacterial infection", "When": "After food", "Safety": "⚠️ Caution"},
             {"Medicine": "Ibuprofen 400mg", "Purpose": "Pain and fever", "When": "If needed", "Safety": "❌ High Risk"}
         ]
         st.table(med_data)
         
     with col_nearby:
         st.subheader("📍 Nearby Pharmacies")
-        st.write("🏥 **HealthPlus Pharmacy** (0.5 km)")
-        st.write("🏥 **LifeCare Pharmacy** (0.8 km)")
+        st.markdown("""
+        - 🏥 **HealthPlus Pharmacy** (0.5 km)
+        - 🏥 **LifeCare Pharmacy** (0.8 km)
+        """)
         st.button("Order Medicine 🛒")
 
 # FOOTER ACTIONS
 st.markdown("---")
-fcol1, fcol2, fcol3, fcol4 = st.columns(4)
+fcol1, fcol2, fcol3 = st.columns(3)
 fcol1.button("📞 Consult Doctor")
 fcol2.button("⏰ Set Reminder")
 fcol3.button("📤 Share Report")
-fcol4.button("🌍 Change Language")
