@@ -1,5 +1,9 @@
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "export",
+  reactStrictMode: true,
+  images: {
+    unoptimized: true, // Takay image loading mein koi issue na ho
+  },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
