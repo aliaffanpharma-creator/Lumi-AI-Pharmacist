@@ -2,8 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    unoptimized: true, // Takay image loading mein koi issue na ho
+    unoptimized: true,
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
